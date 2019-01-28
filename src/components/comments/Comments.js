@@ -52,7 +52,7 @@ export default class Comments extends React.Component {
                 <h3 className="uk-margin-remove-top">Comments:</h3>
                 <div className="uk-comments">
                     {this.state.comments
-                      .sort((a,b) => {b.id - a.id})
+                      .sort((a,b) => b.id - a.id)
                       .map((comment, index) => <Comment key={comment.id} data={comment}/>)}
                 </div>
                 <hr />

@@ -1,7 +1,7 @@
 import React from 'react'
 
 export default function Comment(props) {
-  return  <article className="uk-comment">
+  return  (<article className="uk-comment">
                     <header className="uk-comment-header uk-grid uk-grid-medium uk-flex-middle">
                     <div className="uk-width-expand">
                         <h4 className="uk-comment-title uk-margin-remove">
@@ -15,5 +15,5 @@ export default function Comment(props) {
                     <div className="uk-comment-body">
                     <p>{props.data.body}</p>
                     </div>
-                </article>
+                </article>)
 }
