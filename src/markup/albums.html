@@ -1,0 +1,103 @@
+<html lang="en">
+<head><link rel="stylesheet" href="../normalize.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.40/css/uikit.min.css">
+</head>
+<body>
+
+
+<nav class="uk-navbar-container uk-margin" uk-navbar>
+    <div class="uk-navbar-left">
+
+        <a class="uk-navbar-item uk-logo" href="index.html">Logo</a>
+
+        <ul class="uk-navbar-nav">
+            <li><a href="posts.html">Posts</a></li>
+            <li><a href="users.html">Users</a></li>
+            <li><a href="photos.html">Photos</a></li>
+            <li class="uk-active"><a href="albums.html">Albums</a></li>
+            <li><a href="todos.html">Todos</a></li>
+        </ul>
+    </div>
+</nav>
+
+<main class="uk-main">
+    <div class="uk-section">
+        <div class="uk-container">
+            <div class="uk-margin-medium-bottom uk-flex">
+                <form class="uk-width-medium uk-margin-auto-right">
+                    <input class="uk-input" type="search" placeholder="Search...">
+                </form>
+                <select class="uk-select uk-width-small uk-margin-left">
+                    <option value="all">All</option>
+                    <option value="1">User 1</option>
+                    <option value="2">User 2</option>
+                    <option value="3">User 3</option>
+                </select>
+                <!-- <div class="uk-button-group uk-margin-left">
+                    <button class="uk-button uk-button-default uk-active">
+                        <span uk-icon="icon:  thumbnails"></span>
+                    </button>
+                    <button class="uk-button uk-button-default">
+                        <span uk-icon="icon:  image"></span>
+                    </button>
+                </div> -->
+            </div>
+            <table class="uk-table uk-table-justify uk-table-divider">
+                <tbody>
+                <tr>
+                    <td><span uk-icon="icon: album; ratio: 2"></span></td>
+                    <td>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</td>
+                    <td><a href="#" class="uk-button uk-button-primary js-lightbox" style="white-space: nowrap">Open album</a></td>
+                </tr>
+                <tr>
+                    <td><span uk-icon="icon: album; ratio: 2"></span></td>
+                    <td>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</td>
+                    <td><a href="#" class="uk-button uk-button-primary js-lightbox" style="white-space: nowrap">Open album</a></td>
+                </tr>
+                <tr>
+                    <td><span uk-icon="icon: album; ratio: 2"></span></td>
+                    <td>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</td>
+                    <td><a href="#" class="uk-button uk-button-primary js-lightbox" style="white-space: nowrap">Open album</a></td>
+                </tr>
+                <tr>
+                    <td><span uk-icon="icon: album; ratio: 2"></span></td>
+                    <td>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</td>
+                    <td><a href="#" class="uk-button uk-button-primary js-lightbox" style="white-space: nowrap">Open album</a></td>
+                </tr>
+                </tbody>
+            </table>
+            <ul class="uk-pagination uk-flex-center" uk-margin>
+                <li><a href="#"><span uk-pagination-previous></span></a></li>
+                <li><a href="#">1</a></li>
+                <li class="uk-disabled"><span>...</span></li>
+                <li><a href="#">5</a></li>
+                <li><a href="#">6</a></li>
+                <li class="uk-active"><span>7</span></li>
+                <li><a href="#">8</a></li>
+                <li><a href="#"><span uk-pagination-next></span></a></li>
+            </ul>
+        </div>
+    </div>
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.1/js/uikit.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.1/js/uikit-icons.min.js"></script>
+<script>
+  let util = UIkit.util;
+  util.on('.js-lightbox', 'click', function (e) {
+    e.preventDefault();
+    UIkit.lightboxPanel({
+      items: [
+        {source: 'https://getuikit.com/assets/uikit/tests/images/size1.jpg', caption: 'Caption 1'},
+        {source: 'https://getuikit.com/assets/uikit/tests/images/size2.jpg', caption: 'Caption 2'},
+      ]
+    }).show();
+  });
+</script>
+
+</body>
+</html>

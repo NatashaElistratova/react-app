@@ -4,6 +4,7 @@ import PostPage from '../pages/Post';
 import AlbumPage from '../pages/Album';
 import AlbumsPage from '../pages/Albums';
 import PostsPage from '../pages/Posts';
+import PhotosPage from '../pages/Photos';
 import {Navigation} from "./Navigation";
 import {Breadcrumbs} from "./Breadcrumbs";
 
@@ -11,13 +12,14 @@ export function App() {
   return <Router>
             <div>
               <Navigation/>
-              <Breadcrumbs/>
+              {/*<Breadcrumbs/>*/}
               <main className="uk-main">
                 <div className="uk-section">
                   <div className="uk-container">
                     <Switch>
                       <Route path={'/posts'} exact component={PostsPage}/>
                       <Route path={'/albums'} exact component={AlbumsPage}/>
+                      <Route path={'/photos'} exact component={PhotosPage}/>
                       <Route path={'/posts/:id'} component={PostPage}/>
                       <Route path={'/albums/:id'} component={AlbumPage}/>
                     </Switch>

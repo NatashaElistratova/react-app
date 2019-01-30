@@ -1,16 +1,15 @@
 import React from 'react';
-import { getData } from '../../api'
 
 export function Limit(props){
   function setPostsLimit(val){
-    getData({
-      resources: props.resources,
+    props.apiMethod({
       limit: val,
       page: props.page,
       order: props.order,
+      searchVal: props.searchVal,
     })
       .then(data => {
-        props.setPostsLimit(data, val)
+        props.setItemsLimit(data, val)
       });
   }
 

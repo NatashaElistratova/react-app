@@ -1,6 +1,7 @@
 import React from 'react'
 
 export function Pagination(props) {
+  let pages = Math.ceil(props.totalCount / props.pagination.limit);
 
   let items = [];
 
@@ -9,12 +10,12 @@ export function Pagination(props) {
     if(current){
       props.onClickPagination(current);
     }
-    if(!current &&  props.pagination.page>=2 && props.pagination.page< props.pages){
+    if(!current &&  props.pagination.page>=2 && props.pagination.page< pages){
       props.onClickPagination(props.pagination.page+index);
     }
   }
 
-  for (let i = 0; i < props.pages; i++) {
+  for (let i = 0; i < pages; i++) {
     items.push(<li key={i} className={i === props.pagination.page - 1 ? 'uk-active': ''}><a href={`/posts/page/${i}`} onClick={(e) => handleClick(i + 1, e)}>{i + 1}</a></li>)
   }
 

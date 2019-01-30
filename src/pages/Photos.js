@@ -1,6 +1,6 @@
 import React from 'react';
-import {getAlbums} from '../api'
-import {Albums} from "../components/Albums";
+import {getPhotos} from '../api'
+import {Photos} from "../components/Photos";
 import {Search} from "../components/actions/Search";
 import {Order} from "../components/actions/Order";
 import {Limit} from "../components/actions/Limit";
@@ -11,58 +11,57 @@ export default class AlbumsPage extends React.Component {
     super(props);
 
     this.state = {
-      albums: [],
+      photos: [],
       pagination: {
         limit: 6,
         page: 1
       },
       totalCount: null,
-      sortAlbumsOrder: 'asc',
+      sortPhotosOrder: 'asc',
       searchVal: ''
     }
     this.onClickPagination = this.onClickPagination.bind(this);
-    this.setAlbumsOrder = this.setAlbumsOrder.bind(this);
-    this.setAlbumsLimit = this.setAlbumsLimit.bind(this);
+    this.setPhotosOrder = this.setPhotosOrder.bind(this);
+    this.setPhotosLimit = this.setPhotosLimit.bind(this);
     this.onSearch = this.onSearch.bind(this);
   }
 
   componentDidMount() {
-    getAlbums({
-      resources: 'albums',
+    getPhotos({
       limit: this.state.pagination.limit,
       page: this.state.pagination.page,
-      order: this.state.sortAlbumsOrder,
+      order: this.state.sortPhotosOrder,
       searchVal: this.state.searchVal,
     }).then(data => {
       this.setState({
-        albums: data.albums,
+        photos: data.photos,
         totalCount: data.totalCount
       })
     })
   }
 
-  setAlbumsOrder(data, val) {
+  setPhotosOrder(data, val) {
     this.setState({
-      sortAlbumsOrder: val,
-      albums: data.albums
+      sortPhotosOrder: val,
+      photos: data.photos
     })
   };
 
-  setAlbumsLimit(data, val) {
+  setPhotosLimit(data, val) {
     this.setState({
       pagination: {
         limit: val,
         page: 1,
       },
-      albums: data.albums
+      photos: data.photos
     })
   }
 
   onClickPagination(current) {
-    getAlbums({
+    getPhotos({
       limit: this.state.pagination.limit,
       page: current,
-      order: this.state.sortAlbumsOrder,
+      order: this.state.sortPhotosOrder,
       searchVal: this.state.searchVal,
     })
       .then(data => {
@@ -70,16 +69,16 @@ export default class AlbumsPage extends React.Component {
           pagination: {
             limit: this.state.pagination.limit,
             page: current,
-            order: this.state.sortAlbumsOrder
+            order: this.state.sortPhotosOrder
           },
-          albums: data.albums
+          photos: data.photos
         })
       })
   }
 
   onSearch(data, query) {
     this.setState({
-      albums: data.albums,
+      photos: data.photos,
       searchVal: query,
       totalCount: data.totalCount
     })
@@ -90,22 +89,22 @@ export default class AlbumsPage extends React.Component {
       <div className="uk-margin-medium-bottom uk-flex">
         <Search limit={this.state.pagination.limit}
                 page={this.state.pagination.page}
-                order={this.state.sortAlbumsOrder}
+                order={this.state.sortPhotosOrder}
                 onSearch={this.onSearch}
-                apiMethod={getAlbums}/>
-        <Order limit={this.state.pagination.limit}
-               page={this.state.pagination.page}
-               setItemsOrder={this.setAlbumsOrder}
-               apiMethod={getAlbums}/>
-        <Limit order={this.state.sortAlbumsOrder}
-               page={this.state.pagination.page}
-               setItemsLimit={this.setAlbumsLimit}
-               apiMethod={getAlbums}/>
+                apiMethod={getPhotos}/>
+        {/*<Order limit={this.state.pagination.limit}*/}
+               {/*page={this.state.pagination.page}*/}
+               {/*setItemsOrder={this.setPhotosOrder}*/}
+               {/*apiMethod={getPhotos}/>*/}
+        {/*<Limit order={this.state.sortPhotosOrder}*/}
+               {/*page={this.state.pagination.page}*/}
+               {/*setItemsLimit={this.setPhotosLimit}*/}
+               {/*apiMethod={getPhotos}/>*/}
       </div>
-      {this.state.albums.length ? <Albums onClickPagination={this.onClickPagination}
+      {this.state.photos.length ? <Photos onClickPagination={this.onClickPagination}
                                           pagination={this.state.pagination}
                                           order={this.state.order}
-                                          albums={this.state.albums}
+                                          photos={this.state.photos}
                                           totalCount={this.state.totalCount}/> : 'Loading'}
       <Pagination
         onClickPagination={this.onClickPagination}

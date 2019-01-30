@@ -1,16 +1,15 @@
 import React from 'react';
-import { getData } from '../../api'
 
 export function Order(props){
   function setPostsOrder(val){
-    getData({
-      resources: props.resources,
+    props.apiMethod({
       limit: props.limit,
       page: props.page,
       order: val,
+      searchVal: props.searchVal,
     })
       .then(data => {
-        props.setPostsOrder(data, val)
+        props.setItemsOrder(data, val)
       });
   }
 
