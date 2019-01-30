@@ -34,10 +34,9 @@
 
  export function getPhotos(params) {
    return fetch (`https://jsonplaceholder.typicode.com/photos?
-    ${params.limit ? `&_limit=${params.limit}`: ''}
-    ${params.page ? `&_page=${params.page}`: ''}
-    &_sort=id
-    ${params.order ? `&_order=${params.order}`: ''}
+    ${params.start ? `&_start=${params.start}`: ''}
+    ${params.end ? `&_end=${params.end}`: ''}
+    ${params.albumId ? `&_albumId=${params.albumId}`: ''}
     ${params.searchVal ? `&q=${params.searchVal}`: ''}`
      .replace(/\s/g, ''))
      .then(response =>
