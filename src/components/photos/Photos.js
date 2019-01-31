@@ -1,6 +1,6 @@
 import React from 'react'
 import {Photo} from './Photo'
-import {getPhotos} from "../api";
+import {getPhotos} from "../../api";
 
 export function Photos(props) {
   function getMorePhotos(){

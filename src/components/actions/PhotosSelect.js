@@ -2,6 +2,7 @@ import React from 'react';
 
 export function PhotosSelect(props){
   function setPhotosAlbum(val){
+    console.log(222)
     props.apiMethod({
       start:props.start,
       end:props.end,

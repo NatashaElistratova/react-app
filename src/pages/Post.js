@@ -1,5 +1,5 @@
 import React from 'react';
-import { SinglePost } from '../components/SinglePost';
+import { SinglePost } from '../components/posts/SinglePost';
 import  Comments from '../components/comments/Comments';
 import { getPost } from '../api'
 

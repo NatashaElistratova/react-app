@@ -1,6 +1,6 @@
 import React from 'react'
 
-import {Posts} from '../components/Posts'
+import {Posts} from '../components/posts/Posts'
 import {getPosts} from '../api'
 import {Search} from "../components/actions/Search";
 import {Order} from "../components/actions/Order";

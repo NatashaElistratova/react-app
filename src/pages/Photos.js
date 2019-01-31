@@ -1,6 +1,6 @@
 import React from 'react';
 import {getPhotos} from '../api'
-import {Photos} from "../components/Photos";
+import {Photos} from "../components/photos/Photos";
 import {Search} from "../components/actions/Search";
 import {PhotosSelect} from "../components/actions/PhotosSelect";
 

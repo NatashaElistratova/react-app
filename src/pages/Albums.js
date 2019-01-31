@@ -1,6 +1,6 @@
 import React from 'react';
 import {getAlbums} from '../api'
-import {Albums} from "../components/Albums";
+import {Albums} from "../components/albums/Albums";
 import {Search} from "../components/actions/Search";
 import {Order} from "../components/actions/Order";
 import {Limit} from "../components/actions/Limit";
