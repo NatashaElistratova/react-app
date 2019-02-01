@@ -1,19 +1,9 @@
 import React from 'react'
 import {Photo} from './Photo'
-import {getPhotos} from "../../api";
 
 export function Photos(props) {
   function getMorePhotos(){
-    let newStart = props.start + 6;
-    let newEnd = props.end + 6;
-    getPhotos({
-      start: newStart,
-      end: newEnd,
-      searchVal: props.searchVal,
-      albumId: props.albumId,
-    }).then(response => {
-      props.getMorePhotos(response.photos, newStart, newEnd);
-    })
+      props.getMorePhotos();
   }
   return <div>
           <div className="uk-grid uk-child-width-1-2@s uk-child-width-1-2@m" data-uk-grid="masonry: true">

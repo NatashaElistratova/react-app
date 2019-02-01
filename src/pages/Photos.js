@@ -2,18 +2,19 @@ import React from 'react';
 import {getPhotos} from '../api'
 import {Photos} from "../components/photos/Photos";
 import {Search} from "../components/actions/Search";
-import {PhotosSelect} from "../components/actions/PhotosSelect";
+import {AlbumSelect} from "../components/actions/AlbumSelect";
 
-export default class AlbumsPage extends React.Component {
+export default class PhotosPage extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
       photos: [],
+      photosToShow:[],
       searchVal: '',
       albumId:'all',
       start: 0,
-      end: 6,
+      end: 9,
     }
 
     this.onSearch = this.onSearch.bind(this);
@@ -28,7 +29,10 @@ export default class AlbumsPage extends React.Component {
       searchVal: this.state.searchVal,
       albumId: this.state.albumId,
     }).then(data => {
+      let photosToShow = data.photos.slice(0,6);
+
       this.setState({
+        photosToShow: photosToShow,
         photos: data.photos,
       })
     })
@@ -48,13 +52,27 @@ export default class AlbumsPage extends React.Component {
     })
   }
 
-  getMorePhotos(photos, newStart, newEnd){
-    let morePhotos = this.state.photos.concat(photos);
+  getMorePhotos(){
+    let photos = [...this.state.photos];
+    this.setState({
+      photosToShow: photos,
+    });
+
+    let newStart = this.state.end + 1;
+    let newEnd = this.state.end + 4;
+    getPhotos({
+      start: newStart,
+      end: newEnd,
+      searchVal: this.state.searchVal,
+      albumId: this.state.albumId,
+    }).then(response => {
+      let newPhotos = [...this.state.photos, ...response.photos];
       this.setState({
-        photos: morePhotos,
+        photos: newPhotos,
         start: newStart,
         end: newEnd,
       })
+    });
   }
 
   render() {
@@ -67,14 +85,14 @@ export default class AlbumsPage extends React.Component {
                 end={this.state.end}
                 searchVal={this.state.searchVal}
                 albumId={this.state.albumId}/>
-        <PhotosSelect setPhotosAlbum={this.setPhotosAlbum}
+        <AlbumSelect setPhotosAlbum={this.setPhotosAlbum}
                       apiMethod={getPhotos}
                       start={this.state.start}
                       end={this.state.end}
                       searchVal={this.state.searchVal}
                       albumId={this.state.albumId}/>
       </div>
-      {this.state.photos.length ? <Photos photos={this.state.photos}
+      {this.state.photos.length ? <Photos photos={this.state.photosToShow}
                                           getMorePhotos={this.getMorePhotos}
                                           apiMethod={getPhotos}
                                           start={this.state.start}
