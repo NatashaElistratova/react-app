@@ -10,7 +10,7 @@ export default class PhotosPage extends React.Component {
 
     this.state = {
       photos: [],
-      photosToShow:[],
+      prefetchPhotos:[],
       searchVal: '',
       albumId:'all',
       start: 0,
@@ -29,11 +29,12 @@ export default class PhotosPage extends React.Component {
       searchVal: this.state.searchVal,
       albumId: this.state.albumId,
     }).then(data => {
-      let photosToShow = data.photos.slice(0,6);
+      let photos = data.photos.slice(0,6);
+      let prefetchPhotos = data.photos.slice(6,10);
 
       this.setState({
-        photosToShow: photosToShow,
-        photos: data.photos,
+        prefetchPhotos: prefetchPhotos,
+        photos: photos,
       })
     })
   }
@@ -53,9 +54,9 @@ export default class PhotosPage extends React.Component {
   }
 
   getMorePhotos(){
-    let photos = [...this.state.photos];
+    let photos = [...this.state.photos, ...this.state.prefetchPhotos];
     this.setState({
-      photosToShow: photos,
+      photos: photos,
     });
 
     let newStart = this.state.end + 1;
@@ -66,9 +67,8 @@ export default class PhotosPage extends React.Component {
       searchVal: this.state.searchVal,
       albumId: this.state.albumId,
     }).then(response => {
-      let newPhotos = [...this.state.photos, ...response.photos];
       this.setState({
-        photos: newPhotos,
+        prefetchPhotos: response.photos,
         start: newStart,
         end: newEnd,
       })
@@ -92,7 +92,7 @@ export default class PhotosPage extends React.Component {
                       searchVal={this.state.searchVal}
                       albumId={this.state.albumId}/>
       </div>
-      {this.state.photos.length ? <Photos photos={this.state.photosToShow}
+      {this.state.photos.length ? <Photos photos={this.state.photos}
                                           getMorePhotos={this.getMorePhotos}
                                           apiMethod={getPhotos}
                                           start={this.state.start}

@@ -1,10 +1,11 @@
 import React from 'react';
-import {getAlbums} from '../api'
+import {getAlbums, getPhotos} from '../api'
 import {Albums} from "../components/albums/Albums";
 import {Search} from "../components/actions/Search";
 import {Order} from "../components/actions/Order";
 import {Limit} from "../components/actions/Limit";
 import {Pagination} from "../components";
+import UIkit from 'uikit';
 
 export default class AlbumsPage extends React.Component {
   constructor(props) {
@@ -85,6 +86,36 @@ export default class AlbumsPage extends React.Component {
     })
   }
 
+  openPopup(e, albumId){
+    e.preventDefault();
+
+    getPhotos({
+      params: {
+        albumId: albumId
+      }
+    })
+      .then(data => {
+        const photos = data.photos
+
+        UIkit.lightboxPanel({
+          // items: [
+          //     {source: 'https://getuikit.com/assets/uikit/tests/images/size1.jpg', caption: 'Caption 1'},
+          //     {source: 'https://getuikit.com/assets/uikit/tests/images/size2.jpg', caption: 'Caption 2'},
+          // ]
+
+          items: photos.map((photo, index) => {
+            return {
+              source: `${photo.url}.jpg`,
+              caption: `${index} - ${photo.title}`
+            }
+          })
+
+        }).show();
+
+      })
+
+  }
+
   render() {
     return <div>
       <div className="uk-margin-medium-bottom uk-flex">
@@ -106,7 +137,8 @@ export default class AlbumsPage extends React.Component {
                                           pagination={this.state.pagination}
                                           order={this.state.order}
                                           albums={this.state.albums}
-                                          totalCount={this.state.totalCount}/> : 'Loading'}
+                                          totalCount={this.state.totalCount}
+                                          openPopup={this.openPopup}/> : 'Loading'}
       <Pagination
         onClickPagination={this.onClickPagination}
         totalCount={this.state.totalCount}
