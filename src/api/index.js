@@ -1,7 +1,10 @@
- export function getPosts(params) {
-   return fetch (`https://jsonplaceholder.typicode.com/posts?
+ export function getData(params) {
+   return fetch (`https://jsonplaceholder.typicode.com/${params.path}?
     ${params.limit ? `&_limit=${params.limit}`: ''}
     ${params.page ? `&_page=${params.page}`: ''}
+    ${params.start ? `&_start=${params.start}`: ''}
+    ${params.end ? `&_end=${params.end}`: ''}
+    ${params.albumId && params.albumId !== 'all' ? `&albumId=${params.albumId}`: ''}
     &_sort=id
     ${params.order ? `&_order=${params.order}`: ''}
     ${params.searchVal ? `&q=${params.searchVal}`: ''}`
@@ -9,44 +12,12 @@
     .then(response =>
       response.json()
         .then(data => ({
-          posts: data,
+          json: data,
           totalCount: response.headers.get('x-total-count')
         })
-      ).then(data => data));
-}
-
- export function getAlbums(params) {
-   return fetch (`https://jsonplaceholder.typicode.com/albums?
-    ${params.limit ? `&_limit=${params.limit}`: ''}
-    ${params.page ? `&_page=${params.page}`: ''}
-    &_sort=id
-    ${params.order ? `&_order=${params.order}`: ''}
-    ${params.searchVal ? `&q=${params.searchVal}`: ''}`
-     .replace(/\s/g, ''))
-     .then(response =>
-       response.json()
-         .then(data => ({
-             albums: data,
-             totalCount: response.headers.get('x-total-count')
-           })
-         ).then(data => data));
- }
-
- export function getPhotos(params) {
-   return fetch (`https://jsonplaceholder.typicode.com/photos?
-    ${params.start ? `&_start=${params.start}`: ''}
-    ${params.end ? `&_end=${params.end}`: ''}
-    ${params.albumId && params.albumId !== 'all' ? `&albumId=${params.albumId}`: ''}
-    ${params.searchVal ? `&q=${params.searchVal}`: ''}`
-     .replace(/\s/g, ''))
-     .then(response =>
-       response.json()
-         .then(data => ({
-             photos: data,
-             totalCount: response.headers.get('x-total-count')
-           })
-         ).then(data => data));
- }
+      )
+        .then(data => data))
+};
 
 export function getPost(id) {
    return fetch(`https://jsonplaceholder.typicode.com/posts/${id}`)

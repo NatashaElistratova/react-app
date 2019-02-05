@@ -1,8 +1,10 @@
 import React from 'react';
+import {getData} from '../../api'
 
 export function Order(props){
   function setPostsOrder(val){
-    props.apiMethod({
+    getData({
+      path: props.apiPath,
       limit: props.limit,
       page: props.page,
       order: val,

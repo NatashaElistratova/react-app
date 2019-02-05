@@ -1,8 +1,8 @@
 import React from 'react';
-import {getPhotos} from '../api'
+import {getData} from '../api'
 import {Photos} from "../components/photos/Photos";
 import {Search} from "../components/actions/Search";
-import {AlbumSelect} from "../components/actions/AlbumSelect";
+import {SelectFilter} from "../components/actions/SelectFilter";
 
 export default class PhotosPage extends React.Component {
   constructor(props) {
@@ -14,7 +14,14 @@ export default class PhotosPage extends React.Component {
       searchVal: '',
       albumId:'all',
       start: 0,
-      end: 9,
+      end: 6,
+      load: 3,
+      selectOptions:[
+        {value:'all', title:'All'},
+        {value:'1', title:'Album 1'},
+        {value:'2', title:'Album 2'},
+        {value:'3', title:'Album 3'},
+      ]
     }
 
     this.onSearch = this.onSearch.bind(this);
@@ -23,14 +30,15 @@ export default class PhotosPage extends React.Component {
   }
 
   componentDidMount() {
-    getPhotos({
+    getData({
+      path:'photos',
       start:this.state.start,
-      end:this.state.end,
+      end:this.state.end + this.state.load,
       searchVal: this.state.searchVal,
       albumId: this.state.albumId,
     }).then(data => {
-      let photos = data.photos.slice(0,6);
-      let prefetchPhotos = data.photos.slice(6,10);
+      let photos = data.json.slice(0,this.state.end);
+      let prefetchPhotos = data.json.slice(this.state.end, this.state.end + this.state.load);
 
       this.setState({
         prefetchPhotos: prefetchPhotos,
@@ -39,16 +47,27 @@ export default class PhotosPage extends React.Component {
     })
   }
 
-  setPhotosAlbum(data, val){
+  setPhotosAlbum(data, val, start, end){
+    let photos = data.json.slice(0, end);
+    let prefetchPhotos = data.json.slice(end, end+this.state.load);
+
     this.setState({
-      photos: data.photos,
+      photos: photos,
+      prefetchPhotos: prefetchPhotos,
       albumId: val,
+      start: start,
+      end: end
     })
   }
 
-  onSearch(data, query) {
+  onSearch(data, query, end) {
+    console.log(end)
+    let photos = data.json.slice(0, end);
+    let prefetchPhotos = data.json.slice(end, end+this.state.load);
+
     this.setState({
-      photos: data.photos,
+      photos: photos,
+      prefetchPhotos: prefetchPhotos,
       searchVal: query,
     })
   }
@@ -60,15 +79,16 @@ export default class PhotosPage extends React.Component {
     });
 
     let newStart = this.state.end + 1;
-    let newEnd = this.state.end + 4;
-    getPhotos({
-      start: newStart,
-      end: newEnd,
+    let newEnd = newStart + this.state.load;
+    getData({
+      path:'photos',
+      start: newStart + this.state.load,
+      end: newEnd + this.state.load,
       searchVal: this.state.searchVal,
       albumId: this.state.albumId,
     }).then(response => {
       this.setState({
-        prefetchPhotos: response.photos,
+        prefetchPhotos: response.json,
         start: newStart,
         end: newEnd,
       })
@@ -80,23 +100,21 @@ export default class PhotosPage extends React.Component {
       <div className="uk-margin-medium-bottom uk-flex">
 
         <Search onSearch={this.onSearch}
-                apiMethod={getPhotos}
-                start={this.state.start}
-                end={this.state.end}
+                apiPath={'photos'}
                 searchVal={this.state.searchVal}
                 albumId={this.state.albumId}/>
-        <AlbumSelect setPhotosAlbum={this.setPhotosAlbum}
-                      apiMethod={getPhotos}
-                      start={this.state.start}
-                      end={this.state.end}
+        <SelectFilter setSelectMethod={this.setPhotosAlbum}
+                      apiPath={'photos'}
                       searchVal={this.state.searchVal}
-                      albumId={this.state.albumId}/>
+                      albumId={this.state.albumId}
+                      selectOptions={this.state.selectOptions}/>
       </div>
       {this.state.photos.length ? <Photos photos={this.state.photos}
                                           getMorePhotos={this.getMorePhotos}
-                                          apiMethod={getPhotos}
+                                          apiMethod={getData}
                                           start={this.state.start}
                                           end={this.state.end}
+                                          load={this.state.load}
                                           searchVal={this.state.searchVal}
                                           albumId={this.state.albumId}/> : 'Loading'}
     </div>

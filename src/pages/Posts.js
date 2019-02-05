@@ -1,7 +1,7 @@
 import React from 'react'
 
 import {Posts} from '../components/posts/Posts'
-import {getPosts} from '../api'
+import {getData} from '../api'
 import {Search} from "../components/actions/Search";
 import {Order} from "../components/actions/Order";
 import {Limit} from "../components/actions/Limit";
@@ -32,14 +32,15 @@ export default class PostsPage extends React.Component {
   }
 
   componentDidMount() {
-    getPosts({
+    getData({
+      path:'posts',
       limit: this.state.pagination.limit,
       page: this.state.pagination.page,
       order: this.state.sortPostsOrder,
       searchVal: this.state.searchVal
     }).then(data => {
         this.setState({
-          posts: data.posts,
+          posts: data.json,
           totalCount: data.totalCount
         });
       })
@@ -48,7 +49,7 @@ export default class PostsPage extends React.Component {
   setPostsOrder(data, val) {
     this.setState({
       sortPostsOrder: val,
-      posts: data.posts
+      posts: data.json
     })
   };
 
@@ -58,12 +59,13 @@ export default class PostsPage extends React.Component {
         limit: val,
         page: 1,
       },
-      posts: data.posts
+      posts: data.json
     })
   }
 
   onClickPagination(current) {
-    getPosts({
+    getData({
+      path:'posts',
       limit: this.state.pagination.limit,
       page: current,
       order: this.state.sortPostsOrder,
@@ -76,14 +78,14 @@ export default class PostsPage extends React.Component {
             page: current,
             order: this.state.sortPostsOrder
           },
-          posts: data.posts
+          posts: data.json
         })
       })
   }
 
   onSearch(data, query) {
     this.setState({
-      posts: data.posts,
+      posts: data.json,
       searchVal: query,
       totalCount: data.totalCount
     })
@@ -102,19 +104,19 @@ export default class PostsPage extends React.Component {
                 order={this.state.sortPostsOrder}
                 searchVal={this.state.searchVal}
                 onSearch={this.onSearch}
-                apiMethod={getPosts}/>
+                apiPath={'posts'}/>
         <Order resources={'posts'}
                limit={this.state.pagination.limit}
                page={this.state.pagination.page}
                searchVal={this.state.searchVal}
                setItemsOrder={this.setPostsOrder}
-               apiMethod={getPosts}/>
+               apiPath={'posts'}/>
         <Limit resources={'posts'}
                order={this.state.sortPostsOrder}
                page={this.state.pagination.page}
                searchVal={this.state.searchVal}
                setItemsLimit={this.setPostsLimit}
-               apiMethod={getPosts}/>
+               apiPath={'posts'}/>
         <div className="uk-button-group uk-margin-left">
           <button className={`uk-button uk-button-default ${this.state.view === 'grid' ? 'uk-active' : false}`}
                   onClick={() => this.setPostsView('grid')}>

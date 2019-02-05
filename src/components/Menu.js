@@ -8,7 +8,6 @@ export function Menu() {
           <li><Link to={"/photos"}>Photos</Link></li>
           <li><Link to={"/albums"}>Albums</Link></li>
           <li><a href="todos.html">Todos</a></li>
-          <li><a href="comments.html">Comments</a></li>
       </ul>
 }
 

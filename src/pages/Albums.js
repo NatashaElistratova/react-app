@@ -1,11 +1,10 @@
 import React from 'react';
-import {getAlbums, getPhotos} from '../api'
+import {getData} from '../api'
 import {Albums} from "../components/albums/Albums";
 import {Search} from "../components/actions/Search";
-import {Order} from "../components/actions/Order";
-import {Limit} from "../components/actions/Limit";
 import {Pagination} from "../components";
 import UIkit from 'uikit';
+import {SelectFilter} from "../components/actions/SelectFilter";
 
 export default class AlbumsPage extends React.Component {
   constructor(props) {
@@ -19,7 +18,13 @@ export default class AlbumsPage extends React.Component {
       },
       totalCount: null,
       sortAlbumsOrder: 'asc',
-      searchVal: ''
+      searchVal: '',
+      selectOptions:[
+        {value:'all', title:'All'},
+        {value:'1', title:'User 1'},
+        {value:'2', title:'User 2'},
+        {value:'3', title:'User 3'},
+      ]
     }
     this.onClickPagination = this.onClickPagination.bind(this);
     this.setAlbumsOrder = this.setAlbumsOrder.bind(this);
@@ -28,8 +33,8 @@ export default class AlbumsPage extends React.Component {
   }
 
   componentDidMount() {
-    getAlbums({
-      resources: 'albums',
+    getData({
+      path: 'albums',
       limit: this.state.pagination.limit,
       page: this.state.pagination.page,
       order: this.state.sortAlbumsOrder,
@@ -60,7 +65,8 @@ export default class AlbumsPage extends React.Component {
   }
 
   onClickPagination(current) {
-    getAlbums({
+    getData({
+      path: 'albums',
       limit: this.state.pagination.limit,
       page: current,
       order: this.state.sortAlbumsOrder,
@@ -89,10 +95,9 @@ export default class AlbumsPage extends React.Component {
   openPopup(e, albumId){
     e.preventDefault();
 
-    getPhotos({
-      params: {
+    getData({
+        path:'photos',
         albumId: albumId
-      }
     })
       .then(data => {
         const photos = data.photos
@@ -123,15 +128,14 @@ export default class AlbumsPage extends React.Component {
                 page={this.state.pagination.page}
                 order={this.state.sortAlbumsOrder}
                 onSearch={this.onSearch}
-                apiMethod={getAlbums}/>
-        <Order limit={this.state.pagination.limit}
-               page={this.state.pagination.page}
-               setItemsOrder={this.setAlbumsOrder}
-               apiMethod={getAlbums}/>
-        <Limit order={this.state.sortAlbumsOrder}
-               page={this.state.pagination.page}
-               setItemsLimit={this.setAlbumsLimit}
-               apiMethod={getAlbums}/>
+                apiPath={'albums'}/>
+        <SelectFilter setSelectMethod={this.setAlbumUser}
+                      apiPath={'albums'}
+                      start={this.state.start}
+                      end={this.state.end}
+                      searchVal={this.state.searchVal}
+                      albumId={this.state.albumId}
+                      selectOptions={this.state.selectOptions}/>
       </div>
       {this.state.albums.length ? <Albums onClickPagination={this.onClickPagination}
                                           pagination={this.state.pagination}
