@@ -64,7 +64,6 @@ export default class PhotosPage extends React.Component {
   }
 
   onSearch(data, query, end) {
-    console.log(end)
     let photos = data.json.slice(0, end);
     let prefetchPhotos = data.json.slice(end, end+this.state.load);
 
@@ -112,10 +111,13 @@ export default class PhotosPage extends React.Component {
                 start={0}
                 load={this.state.start}/>
         <SelectFilter setSelectMethod={this.setPhotosAlbum}
+                      end={6}
+                      start={0}
+                      load={this.state.start}
                       apiPath={'/photos'}
+                      propName={'albumId'}
                       selectOptionName={'title'}
                       searchVal={this.state.searchVal}
-                      albumId={this.state.albumId}
                       selectOptions={this.state.selectOptions}/>
       </div>
       {this.state.photos.length ? <Photos photos={this.state.photos}

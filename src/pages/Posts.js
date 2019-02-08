@@ -105,7 +105,7 @@ export default class PostsPage extends React.Component {
       <div className="uk-margin-medium-bottom uk-flex">
         <Search resources={'/posts'}
                 limit={this.state.pagination.limit}
-                page={this.state.pagination.page}
+                page={1}
                 sort={this.state.sort}
                 order={this.state.sortPostsOrder}
                 searchVal={this.state.searchVal}

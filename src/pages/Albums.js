@@ -120,18 +120,18 @@ export default class AlbumsPage extends React.Component {
     return <div>
       <div className="uk-margin-medium-bottom uk-flex">
         <Search limit={this.state.pagination.limit}
-                page={this.state.pagination.page}
-                order={this.state.sortAlbumsOrder}
+                page={1}
+                propName={'userId'}
+                propValue={this.state.userId}
                 onSearch={this.onSearch}
                 apiPath={'/albums'}/>
         <SelectFilter setSelectMethod={this.setAlbumUser}
                       apiPath={'/albums'}
-                      start={this.state.start}
-                      end={this.state.end}
+                      limit={this.state.pagination.limit}
+                      page={1}
                       selectOptionName={'name'}
                       searchVal={this.state.searchVal}
-                      propName={'albumId'}
-                      propValue={this.state.albumId}
+                      propName={'userId'}
                       selectOptions={this.state.selectOptions}/>
       </div>
       {this.state.albums.length ? <Albums onClickPagination={this.onClickPagination}

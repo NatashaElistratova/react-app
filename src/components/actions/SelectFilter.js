@@ -3,20 +3,19 @@ import {getData} from '../../api'
 
 export function SelectFilter(props){
   function setSelectItem(val){
-    let start = 0;
-    let end = 6;
-    let load = 3;
+
     getData(props.apiPath,{
       params: {
-        _start: start,
-        _end: end + load,
+        _start: props.start,
+        _end: props.end + props.load,
+        _limit: props.limit,
+        _page: props.page,
         q: props.searchVal,
+        [props.propName]: val
       }
-
-      // `${props.propName}`: val
     })
       .then(data => {
-        props.setSelectMethod(data, val, start, end)
+        props.setSelectMethod(data, val, props.start, props.end)
       });
   }
 
