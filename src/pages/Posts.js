@@ -20,6 +20,7 @@ export default class PostsPage extends React.Component {
       totalCount: null,
       sortPostsOrder: 'asc',
       view: 'list',
+      sort: 'id',
       searchVal: ''
     }
 
@@ -32,16 +33,18 @@ export default class PostsPage extends React.Component {
   }
 
   componentDidMount() {
-    getData({
-      path:'posts',
-      limit: this.state.pagination.limit,
-      page: this.state.pagination.page,
-      order: this.state.sortPostsOrder,
-      searchVal: this.state.searchVal
+    getData('/posts',{
+      params : {
+        _limit: this.state.pagination.limit,
+        _page: this.state.pagination.page,
+        _sort: this.state.sort,
+        _order: this.state.sortPostsOrder,
+        searchVal: this.state.searchVal
+      }
     }).then(data => {
         this.setState({
           posts: data.json,
-          totalCount: data.totalCount
+          totalCount: data.headers.total
         });
       })
   }
@@ -64,12 +67,14 @@ export default class PostsPage extends React.Component {
   }
 
   onClickPagination(current) {
-    getData({
-      path:'posts',
-      limit: this.state.pagination.limit,
-      page: current,
-      order: this.state.sortPostsOrder,
-      searchVal: this.state.searchVal,
+    getData('/posts',{
+      params: {
+        _limit: this.state.pagination.limit,
+        _page: current,
+        _sort: this.state.sort,
+        _order: this.state.sortPostsOrder,
+        q: this.state.searchVal,
+      }
     })
       .then(data => {
         this.setState({
@@ -87,7 +92,7 @@ export default class PostsPage extends React.Component {
     this.setState({
       posts: data.json,
       searchVal: query,
-      totalCount: data.totalCount
+      totalCount: data.headers.total
     })
   }
 
@@ -98,25 +103,26 @@ export default class PostsPage extends React.Component {
   render() {
     return <div>
       <div className="uk-margin-medium-bottom uk-flex">
-        <Search resources={'posts'}
+        <Search resources={'/posts'}
                 limit={this.state.pagination.limit}
                 page={this.state.pagination.page}
+                sort={this.state.sort}
                 order={this.state.sortPostsOrder}
                 searchVal={this.state.searchVal}
                 onSearch={this.onSearch}
-                apiPath={'posts'}/>
-        <Order resources={'posts'}
-               limit={this.state.pagination.limit}
+                apiPath={'/posts'}/>
+        <Order limit={this.state.pagination.limit}
                page={this.state.pagination.page}
+               sort={this.state.sort}
                searchVal={this.state.searchVal}
                setItemsOrder={this.setPostsOrder}
-               apiPath={'posts'}/>
-        <Limit resources={'posts'}
-               order={this.state.sortPostsOrder}
+               apiPath={'/posts'}/>
+        <Limit order={this.state.sortPostsOrder}
                page={this.state.pagination.page}
+               sort={this.state.sort}
                searchVal={this.state.searchVal}
                setItemsLimit={this.setPostsLimit}
-               apiPath={'posts'}/>
+               apiPath={'/posts'}/>
         <div className="uk-button-group uk-margin-left">
           <button className={`uk-button uk-button-default ${this.state.view === 'grid' ? 'uk-active' : false}`}
                   onClick={() => this.setPostsView('grid')}>

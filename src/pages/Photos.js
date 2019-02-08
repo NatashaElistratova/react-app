@@ -10,18 +10,13 @@ export default class PhotosPage extends React.Component {
 
     this.state = {
       photos: [],
-      prefetchPhotos:[],
+      prefetchPhotos: [],
       searchVal: '',
-      albumId:'all',
+      albumId: 'all',
       start: 0,
       end: 6,
       load: 3,
-      selectOptions:[
-        {value:'all', title:'All'},
-        {value:'1', title:'Album 1'},
-        {value:'2', title:'Album 2'},
-        {value:'3', title:'Album 3'},
-      ]
+      selectOptions: [],
     }
 
     this.onSearch = this.onSearch.bind(this);
@@ -30,12 +25,13 @@ export default class PhotosPage extends React.Component {
   }
 
   componentDidMount() {
-    getData({
-      path:'photos',
-      start:this.state.start,
-      end:this.state.end + this.state.load,
-      searchVal: this.state.searchVal,
-      albumId: this.state.albumId,
+    getData('/photos', {
+      params: {
+        _start:this.state.start,
+        _end:this.state.end + this.state.load,
+        q: this.state.searchVal,
+        albumId: this.state.albumId,
+      }
     }).then(data => {
       let photos = data.json.slice(0,this.state.end);
       let prefetchPhotos = data.json.slice(this.state.end, this.state.end + this.state.load);
@@ -43,6 +39,13 @@ export default class PhotosPage extends React.Component {
       this.setState({
         prefetchPhotos: prefetchPhotos,
         photos: photos,
+      })
+    });
+
+    getData('/albums')
+      .then(data => {
+      this.setState({
+        selectOptions: data.json,
       })
     })
   }
@@ -80,12 +83,13 @@ export default class PhotosPage extends React.Component {
 
     let newStart = this.state.end + 1;
     let newEnd = newStart + this.state.load;
-    getData({
-      path:'photos',
-      start: newStart + this.state.load,
-      end: newEnd + this.state.load,
-      searchVal: this.state.searchVal,
-      albumId: this.state.albumId,
+    getData('/photos',{
+      params: {
+        _start: newStart + this.state.load,
+        _end: newEnd + this.state.load,
+        q: this.state.searchVal,
+        albumId: this.state.albumId,
+      }
     }).then(response => {
       this.setState({
         prefetchPhotos: response.json,
@@ -100,11 +104,16 @@ export default class PhotosPage extends React.Component {
       <div className="uk-margin-medium-bottom uk-flex">
 
         <Search onSearch={this.onSearch}
-                apiPath={'photos'}
+                apiPath={'/photos'}
                 searchVal={this.state.searchVal}
-                albumId={this.state.albumId}/>
+                propName={'albumId'}
+                propValue={this.state.albumId}
+                end={6}
+                start={0}
+                load={this.state.start}/>
         <SelectFilter setSelectMethod={this.setPhotosAlbum}
-                      apiPath={'photos'}
+                      apiPath={'/photos'}
+                      selectOptionName={'title'}
                       searchVal={this.state.searchVal}
                       albumId={this.state.albumId}
                       selectOptions={this.state.selectOptions}/>

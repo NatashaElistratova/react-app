@@ -1,7 +1,6 @@
 import React from 'react'
 import { BrowserRouter as Router, Route, browserHistory, Switch, IndexRoute, Link } from "react-router-dom";
 import PostPage from '../pages/Post';
-import AlbumPage from '../pages/Album';
 import AlbumsPage from '../pages/Albums';
 import PostsPage from '../pages/Posts';
 import PhotosPage from '../pages/Photos';
@@ -21,7 +20,6 @@ export function App() {
                       <Route path={'/albums'} exact component={AlbumsPage}/>
                       <Route path={'/photos'} exact component={PhotosPage}/>
                       <Route path={'/posts/:id'} component={PostPage}/>
-                      <Route path={'/albums/:id'} component={AlbumPage}/>
                     </Switch>
                   </div>
                 </div>

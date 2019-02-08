@@ -3,12 +3,14 @@ import {getData} from '../../api'
 
 export function Limit(props){
   function setPostsLimit(val){
-    getData({
-      path: props.apiPath,
-      limit: val,
-      page: props.page,
-      order: props.order,
-      searchVal: props.searchVal,
+    getData(props.apiPath,{
+      params: {
+        _limit: val,
+        _page: 1,
+        _sort: props.sort,
+        _order: props.order,
+        q: props.searchVal,
+      }
     })
       .then(data => {
         props.setItemsLimit(data, val)

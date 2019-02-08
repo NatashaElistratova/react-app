@@ -6,12 +6,14 @@ export function SelectFilter(props){
     let start = 0;
     let end = 6;
     let load = 3;
-    getData({
-      path: props.apiPath,
-      start: start,
-      end: end + load,
-      searchVal: props.searchVal,
-      albumId: val
+    getData(props.apiPath,{
+      params: {
+        _start: start,
+        _end: end + load,
+        q: props.searchVal,
+      }
+
+      // `${props.propName}`: val
     })
       .then(data => {
         props.setSelectMethod(data, val, start, end)
@@ -19,6 +21,7 @@ export function SelectFilter(props){
   }
 
   return <select className="uk-select uk-width-small uk-margin-left" onChange={(e) => setSelectItem(e.target.value)}>
-            {props.selectOptions.map((option, id) => <option key={id} value={option.value}>{option.title}</option>)}
+            <option value="all">All</option>
+            {props.selectOptions.map((option) => <option key={option.id} value={option.id}>{option[props.selectOptionName]}</option>)}
          </select>
 }

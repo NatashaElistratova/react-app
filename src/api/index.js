@@ -1,23 +1,35 @@
- export function getData(params) {
-   return fetch (`https://jsonplaceholder.typicode.com/${params.path}?
-    ${params.limit ? `&_limit=${params.limit}`: ''}
-    ${params.page ? `&_page=${params.page}`: ''}
-    ${params.start ? `&_start=${params.start}`: ''}
-    ${params.end ? `&_end=${params.end}`: ''}
-    ${params.albumId && params.albumId !== 'all' ? `&albumId=${params.albumId}`: ''}
-    &_sort=id
-    ${params.order ? `&_order=${params.order}`: ''}
-    ${params.searchVal ? `&q=${params.searchVal}`: ''}`
-    .replace(/\s/g, ''))
-    .then(response =>
-      response.json()
-        .then(data => ({
-          json: data,
-          totalCount: response.headers.get('x-total-count')
-        })
-      )
-        .then(data => data))
-};
+const API = 'https://jsonplaceholder.typicode.com';
+
+export function getData(path, options) {
+  let url = `${API + path}`;
+  let params = "";
+
+  if(options && options.hasOwnProperty('params')){
+    for (let key in options.params) {
+      if(options.params[key] && options.params[key] !== "all") {
+        if (params !== "") {
+          params += "&";
+        }
+        params += key + "=" + options.params[key];
+      }
+
+    }
+    url += `${params ? '?' + params : ''}`;
+  }
+
+  return fetch(url)
+    .then(response => {
+      return response.json().then(json =>{
+        return {
+          json: json,
+          headers: {
+            total: response.headers.get('x-total-count') ? +response.headers.get('x-total-count') : json.length
+          }
+        }
+      })
+    } )
+    .then(json => json);
+}
 
 export function getPost(id) {
    return fetch(`https://jsonplaceholder.typicode.com/posts/${id}`)

@@ -3,12 +3,14 @@ import {getData} from '../../api'
 
 export function Order(props){
   function setPostsOrder(val){
-    getData({
-      path: props.apiPath,
-      limit: props.limit,
-      page: props.page,
-      order: val,
-      searchVal: props.searchVal,
+    getData(props.apiPath,{
+      params: {
+        _limit: props.limit,
+        _page: props.page,
+        _sort: props.sort,
+        _order: val,
+        q: props.searchVal,
+      }
     })
       .then(data => {
         props.setItemsOrder(data, val)

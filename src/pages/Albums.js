@@ -17,90 +17,85 @@ export default class AlbumsPage extends React.Component {
         page: 1
       },
       totalCount: null,
-      sortAlbumsOrder: 'asc',
       searchVal: '',
-      selectOptions:[
-        {value:'all', title:'All'},
-        {value:'1', title:'User 1'},
-        {value:'2', title:'User 2'},
-        {value:'3', title:'User 3'},
-      ]
+      selectOptions:[],
+      userId: null,
     }
     this.onClickPagination = this.onClickPagination.bind(this);
-    this.setAlbumsOrder = this.setAlbumsOrder.bind(this);
-    this.setAlbumsLimit = this.setAlbumsLimit.bind(this);
     this.onSearch = this.onSearch.bind(this);
+    this.setAlbumUser = this.setAlbumUser.bind(this);
   }
 
   componentDidMount() {
-    getData({
-      path: 'albums',
-      limit: this.state.pagination.limit,
-      page: this.state.pagination.page,
-      order: this.state.sortAlbumsOrder,
-      searchVal: this.state.searchVal,
+    getData('/albums',{
+      params: {
+        _limit: this.state.pagination.limit,
+        _page: this.state.pagination.page,
+        q: this.state.searchVal,
+      }
     }).then(data => {
       this.setState({
-        albums: data.albums,
-        totalCount: data.totalCount
+        albums: data.json,
+        totalCount: data.headers.total
       })
-    })
-  }
+    });
 
-  setAlbumsOrder(data, val) {
+    getData('/users')
+      .then(data => {
+        this.setState({
+          selectOptions: data.json,
+        })
+      })
+  }
+  setAlbumUser(data, val, start, end){
     this.setState({
-      sortAlbumsOrder: val,
-      albums: data.albums
+      albums: data.json,
+      pagination: {
+        limit: 6,
+        page: 1
+      },
+      userId: val
     })
   };
 
-  setAlbumsLimit(data, val) {
-    this.setState({
-      pagination: {
-        limit: val,
-        page: 1,
-      },
-      albums: data.albums
-    })
-  }
 
   onClickPagination(current) {
-    getData({
-      path: 'albums',
-      limit: this.state.pagination.limit,
-      page: current,
-      order: this.state.sortAlbumsOrder,
-      searchVal: this.state.searchVal,
+    getData('/albums',{
+      params: {
+        _limit: this.state.pagination.limit,
+        _page: current,
+        q: this.state.searchVal,
+      }
     })
       .then(data => {
         this.setState({
           pagination: {
             limit: this.state.pagination.limit,
             page: current,
-            order: this.state.sortAlbumsOrder
           },
-          albums: data.albums
+          albums: data.json
         })
       })
   }
 
   onSearch(data, query) {
     this.setState({
-      albums: data.albums,
+      albums: data.json,
       searchVal: query,
-      totalCount: data.totalCount
+      totalCount: data.headers.total
     })
   }
 
   openPopup(e, albumId){
     e.preventDefault();
 
-    getData({
-        path:'photos',
+    getData('/photos',{
+      params: {
         albumId: albumId
+      }
     })
       .then(data => {
-        const photos = data.photos
+        const photos = data.json
 
         UIkit.lightboxPanel({
           // items: [
@@ -128,13 +123,15 @@ export default class AlbumsPage extends React.Component {
                 page={this.state.pagination.page}
                 order={this.state.sortAlbumsOrder}
                 onSearch={this.onSearch}
-                apiPath={'albums'}/>
+                apiPath={'/albums'}/>
         <SelectFilter setSelectMethod={this.setAlbumUser}
-                      apiPath={'albums'}
+                      apiPath={'/albums'}
                       start={this.state.start}
                       end={this.state.end}
+                      selectOptionName={'name'}
                       searchVal={this.state.searchVal}
-                      albumId={this.state.albumId}
+                      propName={'albumId'}
+                      propValue={this.state.albumId}
                       selectOptions={this.state.selectOptions}/>
       </div>
       {this.state.albums.length ? <Albums onClickPagination={this.onClickPagination}
