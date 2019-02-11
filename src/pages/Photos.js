@@ -17,6 +17,7 @@ export default class PhotosPage extends React.Component {
       end: 6,
       load: 3,
       selectOptions: [],
+      totalCount: null,
     }
 
     this.onSearch = this.onSearch.bind(this);
@@ -39,6 +40,7 @@ export default class PhotosPage extends React.Component {
       this.setState({
         prefetchPhotos: prefetchPhotos,
         photos: photos,
+        totalCount: data.headers.total
       })
     });
 
@@ -94,6 +96,7 @@ export default class PhotosPage extends React.Component {
         prefetchPhotos: response.json,
         start: newStart,
         end: newEnd,
+        totalCount: response.headers.total
       })
     });
   }
@@ -127,7 +130,8 @@ export default class PhotosPage extends React.Component {
                                           end={this.state.end}
                                           load={this.state.load}
                                           searchVal={this.state.searchVal}
-                                          albumId={this.state.albumId}/> : 'Loading'}
+                                          albumId={this.state.albumId}
+                                          totalCount={this.state.totalCount}/> : 'Loading'}
     </div>
   }
 }

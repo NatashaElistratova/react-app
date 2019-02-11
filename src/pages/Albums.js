@@ -50,6 +50,7 @@ export default class AlbumsPage extends React.Component {
   setAlbumUser(data, val, start, end){
     this.setState({
       albums: data.json,
+      totalCount: data.headers.total,
       pagination: {
         limit: 6,
         page: 1

@@ -16,6 +16,9 @@ export function Pagination(props) {
     if(!current &&  props.pagination.page === 1 && index === 1){
       props.onClickPagination(props.pagination.page+index);
     }
+    if(!current &&  props.pagination.page === items.length && index === -1){
+      props.onClickPagination(props.pagination.page+index);
+    }
   }
 
   for (let i = 0; i < pages; i++) {

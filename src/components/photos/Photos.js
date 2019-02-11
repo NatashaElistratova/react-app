@@ -10,7 +10,9 @@ export function Photos(props) {
               {props.photos.map((photo) => <Photo key={photo.id} data={photo}/>)}
           </div>
           <ul className="uk-more uk-text-center uk-margin-medium-top">
-            <button className="uk-button uk-button-primary" onClick={getMorePhotos}>
+            <button className={`uk-button uk-button-primary 
+                    ${props.totalCount <= props.photos.length ? 'uk-disabled' : ''}`}
+                    onClick={getMorePhotos}>
               Load more
             </button>
           </ul>
