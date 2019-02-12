@@ -47,7 +47,7 @@ export default class AlbumsPage extends React.Component {
         })
       })
   }
-  setAlbumUser(data, val, start, end){
+  setAlbumUser(data, val){
     this.setState({
       albums: data.json,
       totalCount: data.headers.total,

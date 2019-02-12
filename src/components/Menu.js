@@ -7,7 +7,7 @@ export function Menu() {
           <li><Link to={"/users"}>Users</Link></li>
           <li><Link to={"/photos"}>Photos</Link></li>
           <li><Link to={"/albums"}>Albums</Link></li>
-          <li><a href="todos.html">Todos</a></li>
+          <li><Link to={"/todos"}>Todos</Link></li>
       </ul>
 }
 
