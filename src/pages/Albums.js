@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { Suspense } from 'react';
+
+
 import {getData} from '../api'
-import {Albums} from "../components/albums/Albums";
 import {Search} from "../components/actions/Search";
 import {Pagination} from "../components";
 import UIkit from 'uikit';
 import {SelectFilter} from "../components/actions/SelectFilter";
+const Albums = React.lazy(() => import('./../components/albums/Albums'));
 
 export default class AlbumsPage extends React.Component {
   constructor(props) {
@@ -118,7 +120,7 @@ export default class AlbumsPage extends React.Component {
   }
 
   render() {
-    return <div>
+    return <React.Fragment>
       <div className="uk-margin-medium-bottom uk-flex">
         <Search limit={this.state.pagination.limit}
                 page={1}
@@ -135,16 +137,22 @@ export default class AlbumsPage extends React.Component {
                       propName={'userId'}
                       selectOptions={this.state.selectOptions}/>
       </div>
-      {this.state.albums.length ? <Albums onClickPagination={this.onClickPagination}
-                                          pagination={this.state.pagination}
-                                          order={this.state.order}
-                                          albums={this.state.albums}
+      <Suspense fallback={<div>Loading...</div>}>
+        {this.state.albums.length ? <React.Fragment>
+                                        <Albums onClickPagination={this.onClickPagination}
+                                                pagination={this.state.pagination}
+                                                order={this.state.order}
+                                                albums={this.state.albums}
+                                                totalCount={this.state.totalCount}
+                                                openPopup={this.openPopup}/>
+
+                                        <Pagination
+                                          onClickPagination={this.onClickPagination}
                                           totalCount={this.state.totalCount}
-                                          openPopup={this.openPopup}/> : 'Loading'}
-      <Pagination
-        onClickPagination={this.onClickPagination}
-        totalCount={this.state.totalCount}
-        pagination={this.state.pagination}/>
-    </div>
+                                          pagination={this.state.pagination}/>
+                                    </React.Fragment>
+            : <h1>Data not found</h1>}
+      </Suspense>
+    </React.Fragment>
   }
 }

@@ -1,6 +1,6 @@
 import React from 'react'
 
-export function Albums(props) {
+export default function Albums(props) {
   function openPopup(e, albumId) {
     props.openPopup(e, albumId);
   }
